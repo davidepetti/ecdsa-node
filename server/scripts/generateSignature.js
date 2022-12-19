@@ -21,3 +21,9 @@ const hash = keccak256(key);
 const address = toHex(hash.slice(hash.length - 20));
 
 // construct the transaction object incrementing the sender transaction count with 1
+const transaction = {
+    sender: address,
+    recipient: args[1],
+    amount: parseInt(args[2]),
+    nonce: 
+}
