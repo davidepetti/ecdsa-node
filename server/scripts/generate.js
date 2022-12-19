@@ -16,5 +16,5 @@ console.log('public key:', toHex(publickKey));
 
 const key = publickKey.slice(1);
 const hash = keccak256(key);
-const address = toHex(hash.slice(hash.length - 20));
+const address = toHex(hash.slice(-20));
 console.log('address:', address);
