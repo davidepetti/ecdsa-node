@@ -13,9 +13,10 @@ function Wallet({
   txHash,
   setTxHash,
 }) {
-  async function onChange(event) {
+  const setValue = (setter) => (event) => setter(event.target.value);
+
+  async function onClick(event) {
     if (signature && recoveryBit && txHash) {
-      console.log(`Recovery bit: ${recoveryBit}`);
       const publicKey = secp.recoverPublicKey(
         txHash,
         signature,
@@ -29,21 +30,8 @@ function Wallet({
       } = await server.get(`balance/${address}`);
       setBalance(balance);
     } else {
-      console.log('No recovery bit');
       setBalance(0);
     }
-  }
-
-  function onSignatureChange(event) {
-    setSignature(event.target.value);
-  }
-
-  function onRecoveryBitChange(event) {
-    setRecoveryBit(event.target.value);
-  }
-
-  function onTxHashChange(event) {
-    setTxHash(event.target.value);
   }
 
   return (
@@ -55,10 +43,7 @@ function Wallet({
         <input
           placeholder='Enter the signature of the transaction'
           value={signature}
-          onChange={(e) => {
-            onSignatureChange(e);
-            onChange(e);
-          }}
+          onChange={setValue(setSignature)}
         ></input>
       </label>
 
@@ -67,10 +52,7 @@ function Wallet({
         <input
           placeholder='Enter the recovery bit of the signature'
           value={recoveryBit}
-          onChange={(e) => {
-            onRecoveryBitChange(e);
-            onChange(e);
-          }}
+          onChange={setValue(setRecoveryBit)}
         ></input>
       </label>
 
@@ -79,12 +61,16 @@ function Wallet({
         <input
           placeholder='Enter the transaction hash'
           value={txHash}
-          onChange={(e) => {
-            onTxHashChange(e);
-            onChange(e);
-          }}
+          onChange={setValue(setTxHash)}
         ></input>
       </label>
+
+      <input
+        type='button'
+        className='button'
+        value='Check Balance'
+        onClick={onClick}
+      />
 
       <div className='balance'>Balance: {balance}</div>
     </div>
