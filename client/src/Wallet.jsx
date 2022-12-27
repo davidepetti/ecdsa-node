@@ -1,6 +1,6 @@
-import secp, { sign } from 'ethereum-cryptography/secp256k1';
-import toHex from 'ethereum-cryptography/utils';
-import keccak256 from 'ethereum-cryptography/keccak';
+import * as secp from 'ethereum-cryptography/secp256k1';
+import { toHex } from 'ethereum-cryptography/utils';
+import { keccak256 } from 'ethereum-cryptography/keccak';
 import server from './server';
 
 function Wallet({
@@ -15,19 +15,21 @@ function Wallet({
 }) {
   async function onChange(event) {
     if (signature && recoveryBit && txHash) {
-      const publicKey = await secp.recoverPublicKey(
+      console.log(`Recovery bit: ${recoveryBit}`);
+      const publicKey = secp.recoverPublicKey(
         txHash,
         signature,
-        recoveryBit
+        parseInt(recoveryBit)
       );
       const key = publicKey.slice(1);
       const hash = keccak256(key);
-      const address = toHex(hash.slice(-20));
+      const address = `0x${toHex(hash.slice(-20))}`;
       const {
         data: { balance },
       } = await server.get(`balance/${address}`);
       setBalance(balance);
     } else {
+      console.log('No recovery bit');
       setBalance(0);
     }
   }

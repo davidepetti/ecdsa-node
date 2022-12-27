@@ -7,9 +7,9 @@ const cors = require('cors');
 const port = 3042;
 
 const balances = {
-  d23092f2100c29a16bb228ff7fb21d3414b941ee: 100,
-  d232a887f3cd7893845078c17b2fabcddffea706: 50,
-  '9f88a4a29ac7ee58f1e4f7805da7809ec37496dc': 75,
+  '0x08cbe4ce481d1f37f6dd418e61eb355dc6704093': 100,
+  '0x4095c0461da190f20747ed49f191d8a57078cf93': 50,
+  '0xd20f193da2d3c1fc726df2d650fe4da3eeb97934': 75,
 };
 
 app.use(cors());

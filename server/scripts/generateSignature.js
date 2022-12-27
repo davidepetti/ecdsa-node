@@ -7,9 +7,9 @@ const { toHex, utf8ToBytes } = require('ethereum-cryptography/utils');
 const { keccak256 } = require('ethereum-cryptography/keccak');
 
 const txCount = {
-  '0x1': 0,
-  '0x2': 0,
-  '0x3': 0,
+  '0x08cbe4ce481d1f37f6dd418e61eb355dc6704093': 0,
+  '0x4095c0461da190f20747ed49f191d8a57078cf93': 0,
+  '0xd20f193da2d3c1fc726df2d650fe4da3eeb97934': 0,
 };
 
 async function generateSignature() {
@@ -25,7 +25,7 @@ async function generateSignature() {
   const publickKey = secp.getPublicKey(privateKey);
   const key = publickKey.slice(1);
   const hash = keccak256(key);
-  const address = toHex(hash.slice(-20));
+  const address = `0x${toHex(hash.slice(-20))}`;
   txCount[address]++;
 
   // construct the transaction object incrementing the sender transaction count with 1
