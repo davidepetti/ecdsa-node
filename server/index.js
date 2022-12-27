@@ -22,17 +22,26 @@ app.get('/balance/:address', (req, res) => {
 });
 
 app.post('/send', (req, res) => {
-  const { sender, recipient, amount } = req.body;
+  const { signature, txHash, recoveryBit, recipient, amount } = req.body;
 
-  setInitialBalance(sender);
+  const publicKey = secp.recoverPublicKey(
+    txHash,
+    signature,
+    parseInt(recoveryBit)
+  );
+  const key = publicKey.slice(1);
+  const hash = keccak256(key);
+  const senderAddress = `0x${toHex(hash.slice(-20))}`;
+
+  setInitialBalance(senderAddress);
   setInitialBalance(recipient);
 
-  if (balances[sender] < amount) {
+  if (balances[senderAddress] < amount) {
     res.status(400).send({ message: 'Not enough funds!' });
   } else {
-    balances[sender] -= amount;
+    balances[senderAddress] -= amount;
     balances[recipient] += amount;
-    res.send({ balance: balances[sender] });
+    res.send({ balance: balances[senderAddress] });
   }
 });
 

@@ -14,7 +14,9 @@ function Transfer({ signature, setBalance, recoveryBit, txHash }) {
       const {
         data: { balance },
       } = await server.post(`send`, {
-        sender: address,
+        signature: signature,
+        txHash: txHash,
+        recoveryBit: parseInt(recoveryBit),
         amount: parseInt(sendAmount),
         recipient,
       });
